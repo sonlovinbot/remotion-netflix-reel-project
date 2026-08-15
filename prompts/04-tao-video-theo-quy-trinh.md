@@ -1,6 +1,13 @@
 # Prompt tạo project mới theo đúng quy trình
 
-> Dựa trên quy trình trong repository này, hãy tạo một project Remotion mới về [CHỦ ĐỀ]. Video dành cho [NGƯỜI XEM], dài khoảng [THỜI LƯỢNG], phong cách [PHONG CÁCH], ngôn ngữ tiếng Việt và khung dọc 1080 × 1920.
+Lệnh nhanh:
+
+```text
+Codex:       $remotion-video new-project
+Claude Code: /remotion-video new-project
+```
+
+> Dùng Skill remotion-video và tạo một thư mục Project 2 mới từ `templates/new-project`. Không sửa Project 1. Video mới nói về [CHỦ ĐỀ], dành cho [NGƯỜI XEM], dài khoảng [THỜI LƯỢNG], phong cách [PHONG CÁCH], ngôn ngữ tiếng Việt và khung dọc 1080 × 1920.
 >
 > Làm theo từng giai đoạn:
 >

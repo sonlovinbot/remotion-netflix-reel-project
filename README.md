@@ -18,7 +18,13 @@ chatgpt-remotion-workflow-kit/
 │   └── 7-buoc-tao-video.md
 ├── prompts/                  Prompt có thể sao chép vào ChatGPT
 ├── workflow/                 Mẫu brief, beat map và checklist
-├── AGENTS.md                 Chỉ dẫn để AI tự vận hành dự án
+├── agent-kit/                Kiểm tra máy, quy trình và tạo Project 2
+├── .agents/skills/           Skill tự nhận diện cho Codex
+├── .claude/skills/           Skill tự nhận diện cho Claude Code
+├── templates/new-project/    Bộ khung cho video tiếp theo
+├── project-manifest.json     Bản đồ tổng của Project 1
+├── AGENTS.md                 Chỉ dẫn cho Codex và agent tương thích
+├── CLAUDE.md                 Chỉ dẫn cho Claude Code
 └── project/                  Dự án Remotion hoàn chỉnh
     ├── public/assets/        Toàn bộ ảnh, audio, logo
     ├── src/                  Mã nguồn và các scene
@@ -28,15 +34,39 @@ chatgpt-remotion-workflow-kit/
 
 ## Bắt đầu mà không dùng Terminal
 
-1. Tải repository về máy bằng nút **Code → Download ZIP** trên GitHub.
-2. Giải nén thư mục.
+1. Tải repository bằng **GitHub Desktop** hoặc nút **Code → Download ZIP** trên GitHub.
+2. Nếu dùng ZIP, giải nén thư mục. Nếu dùng GitHub Desktop, chọn **Show in Finder** hoặc **Show in Explorer**.
 3. Mở Codex hoặc ChatGPT có quyền làm việc với file trên máy.
 4. Chọn thư mục `chatgpt-remotion-workflow-kit` làm workspace.
-5. Sao chép prompt dưới đây:
+5. Gõ lệnh phù hợp với agent:
 
-> Hãy đọc README.md và QUY-TRINH.md trong thư mục này. Tôi là người không chuyên và không muốn dùng Terminal. Hãy tự kiểm tra máy, cài phần cần thiết cho project, mở dự án Remotion trong thư mục project và gửi tôi link preview bản ReelVI. Không thay đổi nội dung dự án ở bước này.
+```text
+Codex:       $remotion-video setup
+Claude Code: /remotion-video setup
+```
 
-AI sẽ tự thực hiện phần kỹ thuật. Khi preview mở, bạn chỉ cần xem video và mô tả điều muốn sửa bằng tiếng Việt.
+Hoặc sao chép prompt dưới đây:
+
+> Hãy dùng Skill remotion-video để chuẩn bị dự án. Trước tiên chỉ kiểm tra máy, chưa cài đặt hoặc thay đổi gì. Báo phần đã có, phần còn thiếu, dung lượng dự kiến và thao tác đề xuất, sau đó chờ tôi xác nhận. Khi tôi đồng ý, hãy cài phần còn thiếu, kiểm tra Project 1, mở ReelVI và gửi link preview local.
+
+AI sẽ kiểm tra trước và xin xác nhận. Sau khi được đồng ý, AI tự thực hiện phần kỹ thuật. Khi preview mở, bạn chỉ cần xem video và mô tả điều muốn sửa bằng tiếng Việt.
+
+## Skill có thể làm gì?
+
+- `setup`: kiểm tra máy, xin xác nhận, cài và mở Project 1.
+- `preview`: mở Remotion Studio mà không sửa nội dung.
+- `doctor`: tìm nguyên nhân khi dự án không chạy.
+- `edit`: sửa đúng scene, caption, audio hoặc asset được yêu cầu.
+- `new-project`: tạo Project 2 trong thư mục riêng.
+- `review`: kiểm tra dữ liệu, hình, tiếng, caption và CTA.
+- `render`: xuất một composition đã được duyệt.
+
+Để tạo video khác từ quy trình này:
+
+```text
+Codex:       $remotion-video new-project
+Claude Code: /remotion-video new-project
+```
 
 Nếu chỉ muốn xem giáo trình, mở file `docs/huong-dan.html` bằng trình duyệt. File này trình bày toàn bộ quy trình bằng ngôn ngữ dành cho người mới.
 
@@ -52,6 +82,12 @@ Xem video tiếng Việt hoàn chỉnh trên [YouTube Shorts](https://youtube.co
 - `Reel`: bản tiếng Anh.
 - `CTA`: riêng phần giới thiệu và lời mời Zoom.
 - `Scene1` đến `Scene5`: xem riêng từng cảnh.
+
+## Ba hướng học tiếp
+
+1. Xem Project 1 và đối chiếu source với Production Guide.
+2. Sửa một chi tiết nhỏ trong một scene rồi kiểm tra bằng frame.
+3. Tạo Project 2 bằng template sạch, không sao chép nội dung Netflix.
 
 ## Bài thực hành đầu tiên
 

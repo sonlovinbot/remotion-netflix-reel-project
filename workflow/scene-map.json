@@ -1,0 +1,57 @@
+{
+  "fps": 30,
+  "primaryComposition": "ReelVI",
+  "storyAudio": "assets/audio/vi-netflix-vo.wav",
+  "ctaAudio": "assets/cta/vo-cta.wav",
+  "totalFrames": 1634,
+  "totalSeconds": 54.4667,
+  "scenes": [
+    {
+      "id": "Scene1",
+      "purpose": "Giới thiệu Netflix và đề nghị bán cho Blockbuster năm 2000",
+      "viFrames": 168,
+      "viSeconds": 5.6,
+      "enFrames": 172,
+      "assets": ["scene1/store.png", "scene1/reed-young.png", "scene1/gold-frame.png", "scene1/cloud1.png", "scene1/cloud2.png", "shared/logo_blockbuster.svg"]
+    },
+    {
+      "id": "Scene2",
+      "purpose": "Mức giá 50 triệu đô và phản ứng cười nhạo",
+      "viFrames": 190,
+      "viSeconds": 6.3333,
+      "enFrames": 148,
+      "assets": ["scene2/boss-laughing.png", "scene2/money-room.png", "scene2/hand-logo.png", "scene2/hand-cash.png", "scene2/smoke.png", "shared/logo_netflix_n.svg"]
+    },
+    {
+      "id": "Scene3",
+      "purpose": "Ba nguyên tắc của mô hình Netflix",
+      "viFrames": 255,
+      "viSeconds": 8.5,
+      "enFrames": 181,
+      "assets": ["scene3/desk.jpg", "scene3/news-late-fees.png", "scene3/news-no-stores.png", "scene3/news-customer-first.png"]
+    },
+    {
+      "id": "Scene4",
+      "purpose": "Blockbuster đóng cửa và phá sản",
+      "viFrames": 155,
+      "viSeconds": 5.1667,
+      "enFrames": 165,
+      "assets": ["scene4/boss-defeated.png", "scene4/closed-sign.jpg", "scene4/chain-lock.jpg", "shared/logo_blockbuster.svg"]
+    },
+    {
+      "id": "Scene5",
+      "purpose": "Kết quả của Netflix và lời từ chối đắt giá",
+      "viFrames": 286,
+      "viSeconds": 9.5333,
+      "enFrames": 324,
+      "assets": ["scene5/reed-triumph.png", "scene5/globe.png", "scene6/reed-rich-v2.png", "shared/logo_netflix_word.png"]
+    },
+    {
+      "id": "CTA",
+      "purpose": "Giới thiệu Sơn, quy trình Skills và lời mời Zoom",
+      "viFrames": 580,
+      "viSeconds": 19.3333,
+      "assets": ["cta/son-studio.jpeg", "cta/vo-cta.wav"]
+    }
+  ]
+}

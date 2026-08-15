@@ -1,0 +1,4 @@
+{
+  "assets": [],
+  "requiredFields": ["path", "type", "scene", "role", "source", "license", "status"]
+}

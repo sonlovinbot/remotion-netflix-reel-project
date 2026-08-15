@@ -1,0 +1,8 @@
+{
+  "id": "replace-me",
+  "title": "Dự án video mới",
+  "status": "brief",
+  "format": {"width": 1080, "height": 1920, "fps": 30},
+  "language": "vi",
+  "createdFrom": null
+}

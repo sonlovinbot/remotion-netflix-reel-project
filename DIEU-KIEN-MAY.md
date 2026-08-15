@@ -6,7 +6,7 @@
 
 - Mac hoặc Windows tương đối mới.
 - RAM 8 GB.
-- Còn trống ít nhất 5 GB.
+- Còn trống ít nhất 10 GB.
 - Trình duyệt Chrome, Edge hoặc Safari.
 - Kết nối Internet để làm việc với ChatGPT.
 
@@ -14,7 +14,7 @@
 
 - Mac dùng chip M1/M2/M3/M4 hoặc máy Windows có CPU tương đương.
 - RAM 16 GB trở lên.
-- Còn trống 10 GB.
+- Còn trống 20 GB.
 
 Máy 8 GB vẫn làm được nhưng preview và render có thể chậm. Máy nóng hoặc quạt chạy khi render là bình thường.
 
@@ -32,6 +32,11 @@ Máy 8 GB vẫn làm được nhưng preview và render có thể chậm. Máy n
 4. **Hình ảnh:** ảnh nhân vật, bối cảnh, logo và tư liệu liên quan.
 5. **Lời kêu gọi hành động:** người xem nên làm gì sau video.
 
-## Cách nhờ ChatGPT kiểm tra máy
+## Cách nhờ agent kiểm tra máy
 
-> Tôi là người không chuyên. Hãy tự kiểm tra máy có đủ điều kiện chạy dự án Remotion trong thư mục project không. Nếu thiếu phần mềm, hãy tự cài theo cách an toàn. Không yêu cầu tôi gõ lệnh. Chỉ giải thích ngắn gọn việc cần làm và báo khi preview sẵn sàng.
+Skill đã nằm sẵn trong repository. Không cần cài Skill thủ công.
+
+- Codex: `$remotion-video setup`
+- Claude Code: `/remotion-video setup`
+
+> Tôi là người không chuyên. Trước tiên chỉ kiểm tra máy có đủ điều kiện chạy dự án Remotion không. Chưa cài đặt gì. Hãy báo phần đã có, phần thiếu, dung lượng dự kiến và chờ tôi xác nhận. Sau khi tôi đồng ý, hãy tự chuẩn bị và gửi link preview ReelVI.

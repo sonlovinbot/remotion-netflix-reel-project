@@ -252,6 +252,35 @@
       text-underline-offset: 4px;
     }
 
+    .start-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .start-card {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .start-card h3 { font-size: 21px; }
+    .start-card p { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+
+    .command-line {
+      margin-top: 18px;
+      padding: 15px 17px;
+      overflow-wrap: anywhere;
+      border-left: 3px solid var(--accent);
+      background: var(--code);
+      color: #eee9df;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
     .flow {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -458,7 +487,7 @@
       .metric-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .page-grid { padding: 0 18px 76px; }
       .section { padding-top: 68px; }
-      .flow, .audio-grid, .asset-grid, .scene-head, .beat-grid, .qa-grid { grid-template-columns: 1fr; }
+      .start-grid, .flow, .audio-grid, .asset-grid, .scene-head, .beat-grid, .qa-grid { grid-template-columns: 1fr; }
       .asset-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .scene-preview { width: min(78vw, 360px); margin: 0 auto; }
     }
@@ -521,6 +550,7 @@
     <div class="page-grid">
       <nav class="side-nav" aria-label="Mục lục">
         <strong>Nội dung</strong>
+        <a href="#bat-dau">Bắt đầu bằng Skill</a>
         <a href="#tong-quan">Tổng quan</a>
         <a href="#quy-trinh">Quy trình từ đầu</a>
         <a href="#prompt-tong">Prompt tổng</a>
@@ -536,6 +566,53 @@
       </nav>
 
       <div class="content">
+        <section class="section" id="bat-dau">
+          <div class="section-header">
+            <h2>Bắt đầu bằng một câu lệnh</h2>
+            <p>Bộ Skill đi kèm giúp học viên mở dự án bằng Codex hoặc Claude Code mà không cần tự thao tác trong Terminal. Agent sẽ đọc bản đồ dự án, kiểm tra máy, xin xác nhận trước khi cài và báo link preview khi hoàn tất.</p>
+          </div>
+
+          <div class="start-grid">
+            <article class="start-card">
+              <h3>Nếu dùng ChatGPT Codex</h3>
+              <p>Mở thư mục này trong Codex, sau đó gửi câu lệnh bên dưới vào ô chat.</p>
+              <div class="command-line"><code>$remotion-video setup</code></div>
+            </article>
+            <article class="start-card">
+              <h3>Nếu dùng Claude Code</h3>
+              <p>Mở cùng thư mục trong Claude Code. Skill dùng chung một nguồn hướng dẫn nên kết quả không bị lệch.</p>
+              <div class="command-line"><code>/remotion-video setup</code></div>
+            </article>
+          </div>
+
+          <div class="notice">
+            <strong>An toàn cho người mới:</strong> Skill chỉ kiểm tra ở bước đầu. Mọi thao tác cài đặt hoặc thay đổi dự án đều phải được học viên đồng ý trước.
+          </div>
+
+          <div class="flow" style="margin-top: 18px">
+            <article class="flow-item"><span class="flow-index">01</span><div><h3>Kiểm tra máy</h3><p>Xem hệ điều hành, dung lượng trống, Git, Bun hoặc Node và tình trạng asset.</p></div></article>
+            <article class="flow-item"><span class="flow-index">02</span><div><h3>Xin xác nhận</h3><p>Báo rõ phần còn thiếu, việc sẽ cài và dung lượng dự kiến trước khi thực hiện.</p></div></article>
+            <article class="flow-item"><span class="flow-index">03</span><div><h3>Chuẩn bị dự án</h3><p>Cài phần cần thiết, kiểm tra composition và giữ nguyên toàn bộ Project 1.</p></div></article>
+            <article class="flow-item"><span class="flow-index">04</span><div><h3>Mở preview</h3><p>Khởi chạy Remotion Studio, gửi link local và gợi ý cách chỉnh scene tiếp theo.</p></div></article>
+          </div>
+
+          <div class="prompt-block" style="margin-top: 18px">
+            <div class="prompt-head"><span>Prompt đầu tiên nếu không gọi trực tiếp Skill</span><button class="copy-button" type="button">Sao chép</button></div>
+            <pre><code>Hãy dùng Skill remotion-video để chuẩn bị dự án này cho người mới.
+Trước tiên chỉ kiểm tra máy và dự án, chưa cài đặt hoặc sửa file.
+Hãy báo cho tôi phần còn thiếu bằng ngôn ngữ dễ hiểu, hỏi xác nhận rồi mới cài.
+Sau khi hoàn tất, hãy kiểm tra composition, mở preview local và gửi link cho tôi.</code></pre>
+          </div>
+
+          <div class="prompt-block" style="margin-top: 14px">
+            <div class="prompt-head"><span>Tạo Project 2 từ bộ khung có sẵn</span><button class="copy-button" type="button">Sao chép</button></div>
+            <pre><code>Hãy dùng Skill remotion-video ở chế độ new-project.
+Tạo Project 2 trong thư mục projects từ bộ khung templates/new-project.
+Trước khi tạo, hãy hỏi tôi 7 câu về chủ đề, người xem, thời lượng, tỉ lệ, phong cách, voice-over và CTA.
+Không sửa Project 1. Sau khi tạo, hãy chỉ rõ brief, script, beat map, asset map và prompt index nằm ở đâu.</code></pre>
+          </div>
+        </section>
+
         <section class="section" id="tong-quan">
           <div class="section-header">
             <h2>Bản thiết kế của video</h2>

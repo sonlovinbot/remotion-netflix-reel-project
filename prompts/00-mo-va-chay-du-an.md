@@ -1,3 +1,17 @@
-# Prompt mở và chạy repository
+# Lệnh đầu tiên để mở repository
 
-> Hãy đọc README.md, DIEU-KIEN-MAY.md và QUY-TRINH.md. Tôi là người không chuyên, không muốn dùng Terminal và không cần xem lệnh kỹ thuật. Hãy tự kiểm tra máy, cài dependency cho thư mục project, chạy Remotion Studio và gửi link preview composition ReelVI. Không thay đổi nội dung dự án. Nếu có lỗi, hãy tự chẩn đoán và chỉ hỏi tôi khi thật sự cần quyết định.
+Codex:
+
+```text
+$remotion-video setup
+```
+
+Claude Code:
+
+```text
+/remotion-video setup
+```
+
+Prompt dùng chung:
+
+> Hãy dùng Skill remotion-video để chuẩn bị dự án này. Trước tiên chỉ kiểm tra máy, chưa cài đặt hoặc thay đổi gì. Báo phần đã có, phần còn thiếu, dung lượng dự kiến và thao tác bạn đề xuất, sau đó chờ tôi xác nhận. Khi tôi đồng ý, hãy tự cài phần còn thiếu, kiểm tra Project 1, mở Remotion Studio và gửi link preview composition ReelVI. Không thay đổi nội dung video.

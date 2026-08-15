@@ -1,0 +1,4 @@
+interface:
+  display_name: "Remotion Video Starter"
+  short_description: "Chuẩn bị và phát triển video Remotion"
+  default_prompt: "Dùng $remotion-video để kiểm tra máy và chuẩn bị dự án mẫu cho người mới."

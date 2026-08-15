@@ -1,0 +1,14 @@
+{
+  "guide": "docs/netflix-reel-production-guide.html",
+  "prompts": [
+    {"id":"setup","title":"Kiểm tra máy và mở Project 1","source":"prompts/00-mo-va-chay-du-an.md","command":{"codex":"$remotion-video setup","claude":"/remotion-video setup"}},
+    {"id":"master","title":"Prompt tổng điều phối Netflix Reel","source":"docs/netflix-reel-production-guide.html#prompt-tong"},
+    {"id":"scene-1","title":"Prompt Scene 1","source":"docs/netflix-reel-production-guide.html#scene-1"},
+    {"id":"scene-2","title":"Prompt Scene 2","source":"docs/netflix-reel-production-guide.html#scene-2"},
+    {"id":"scene-3","title":"Prompt Scene 3","source":"docs/netflix-reel-production-guide.html#scene-3"},
+    {"id":"scene-4","title":"Prompt Scene 4","source":"docs/netflix-reel-production-guide.html#scene-4"},
+    {"id":"scene-5","title":"Prompt Scene 5","source":"docs/netflix-reel-production-guide.html#scene-5"},
+    {"id":"cta","title":"Prompt Scene CTA","source":"docs/netflix-reel-production-guide.html#scene-cta"},
+    {"id":"new-project","title":"Tạo Project 2 theo quy trình","source":"prompts/04-tao-video-theo-quy-trinh.md","command":{"codex":"$remotion-video new-project","claude":"/remotion-video new-project"}}
+  ]
+}

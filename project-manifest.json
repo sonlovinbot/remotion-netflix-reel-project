@@ -1,0 +1,34 @@
+{
+  "id": "project-01-netflix-reel",
+  "title": "Netflix Reel",
+  "role": "Bài mẫu hoàn chỉnh để học quy trình ChatGPT x Remotion",
+  "projectDirectory": "project",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "orientation": "vertical-9-16"
+  },
+  "runtime": {
+    "packageManager": "bun",
+    "lockfile": "project/bun.lock",
+    "remotionVersion": "4.0.409"
+  },
+  "compositions": {
+    "primary": "ReelVI",
+    "english": "Reel",
+    "cta": "CTA",
+    "expected": ["Reel", "ReelVI", "CTA", "Scene1", "Scene2", "Scene3", "Scene4", "Scene5"]
+  },
+  "maps": {
+    "assets": "workflow/asset-map.json",
+    "scenes": "workflow/scene-map.json",
+    "prompts": "workflow/prompt-index.json"
+  },
+  "guides": {
+    "online": "https://sonlovinbot.github.io/remotion-netflix-reel-project/",
+    "local": "docs/netflix-reel-production-guide.html",
+    "video": "https://youtube.com/shorts/CcbWg6tQWvM"
+  },
+  "nextProjectTemplate": "templates/new-project"
+}
