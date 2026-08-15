@@ -1,0 +1,36 @@
+{
+	"name": "netflix-reel",
+	"version": "1.0.0",
+	"description": "Netflix vs Blockbuster — 30s vertical documentary reel",
+	"license": "UNLICENSED",
+	"private": true,
+	"dependencies": {
+		"@remotion/cli": "4.0.409",
+		"@remotion/animation-utils": "4.0.409",
+		"@remotion/layout-utils": "4.0.409",
+		"@remotion/media-utils": "4.0.409",
+		"@remotion/zod-types": "4.0.409",
+		"react": "19.2.3",
+		"react-dom": "19.2.3",
+		"remotion": "4.0.409",
+		"zod": "3.22.3"
+	},
+	"devDependencies": {
+		"@remotion/eslint-config-flat": "4.0.409",
+		"@types/react": "19.2.7",
+		"@types/web": "0.0.166",
+		"eslint": "9.19.0",
+		"prettier": "3.6.0",
+		"typescript": "5.9.3"
+	},
+	"scripts": {
+		"dev": "remotion studio",
+		"preview": "remotion studio",
+		"render:vi": "remotion render ReelVI out/netflix-reel-vi.mp4",
+		"render:en": "remotion render Reel out/netflix-reel-en.mp4",
+		"render:cta": "remotion render CTA out/cta.mp4",
+		"build": "remotion render ReelVI out/netflix-reel-vi.mp4",
+		"upgrade": "remotion upgrade",
+		"lint": "eslint src && tsc"
+	}
+}

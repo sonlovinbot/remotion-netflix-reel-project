@@ -1,0 +1,25 @@
+# Thư viện được cài lại trên từng máy
+node_modules/
+project/node_modules/
+
+# Video và file render không đưa lên Git
+out/
+project/out/
+*.mp4
+*.mov
+*.webm
+
+# Cache và file hệ điều hành
+.DS_Store
+*.log
+.cache/
+project/node_modules/.cache/
+
+# Thông tin riêng tư và cấu hình theo từng máy
+.env
+.env.*
+!.env.example
+
+# File tạm
+tmp/
+*.tmp

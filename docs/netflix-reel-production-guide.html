@@ -1,0 +1,1033 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Asset sheet, voice-over, prompt và quy trình dựng Netflix Reel bằng ChatGPT và Remotion." />
+  <title>Netflix Reel Production Guide</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #10100f;
+      --surface: #181816;
+      --surface-2: #20201d;
+      --surface-3: #292824;
+      --ink: #f1ede4;
+      --muted: #b1aa9d;
+      --faint: #777166;
+      --line: rgba(241, 237, 228, 0.14);
+      --accent: #e2b64e;
+      --accent-ink: #211908;
+      --code: #0d0d0c;
+      --shadow: rgba(0, 0, 0, 0.38);
+      --radius: 16px;
+      --nav-h: 68px;
+      --sans: "Avenir Next", Avenir, "Segoe UI", Helvetica, Arial, sans-serif;
+      --serif: Georgia, "Times New Roman", serif;
+    }
+
+    [data-theme="light"] {
+      color-scheme: light;
+      --bg: #efede7;
+      --surface: #f8f6f0;
+      --surface-2: #e6e2d8;
+      --surface-3: #d9d4c8;
+      --ink: #20201e;
+      --muted: #5f5b53;
+      --faint: #7b756b;
+      --line: rgba(32, 32, 30, 0.16);
+      --accent: #bd8d22;
+      --accent-ink: #181309;
+      --code: #1a1a18;
+      --shadow: rgba(42, 38, 31, 0.16);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 24px); }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.62;
+      text-rendering: optimizeLegibility;
+    }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    p { max-width: 72ch; }
+    code { font-family: "SFMono-Regular", Consolas, monospace; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(18px, 4vw, 54px);
+      border-bottom: 1px solid var(--line);
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+      font-weight: 760;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      flex: none;
+    }
+
+    .brand-sub { color: var(--muted); font-weight: 520; }
+
+    .theme-button, .copy-button, .print-button {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface-2);
+      color: var(--ink);
+      padding: 9px 13px;
+      font-size: 13px;
+      font-weight: 750;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .theme-button:hover, .copy-button:hover, .print-button:hover { border-color: var(--accent); }
+    .theme-button:active, .copy-button:active, .print-button:active { transform: translateY(1px); }
+    .top-actions { display: flex; gap: 8px; }
+
+    .hero {
+      min-height: calc(100dvh - var(--nav-h));
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+      gap: clamp(36px, 6vw, 100px);
+      align-items: center;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: clamp(56px, 8vh, 92px) clamp(22px, 5vw, 76px);
+      overflow: hidden;
+    }
+
+    .hero-copy { max-width: 760px; }
+    .eyebrow {
+      margin: 0 0 22px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, h4 { margin: 0; line-height: 1.06; }
+    h1 {
+      max-width: 720px;
+      font-family: var(--serif);
+      font-size: clamp(50px, 7vw, 100px);
+      font-weight: 500;
+      letter-spacing: -0.055em;
+    }
+
+    h1 em { color: var(--accent); font-weight: 500; line-height: 1.12; padding-bottom: 0.08em; }
+    .hero-lead { margin: 26px 0 0; color: var(--muted); font-size: clamp(17px, 1.5vw, 21px); }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 34px;
+    }
+
+    .metric {
+      padding: 16px 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .metric strong { display: block; font-size: 22px; line-height: 1.1; }
+    .metric span { display: block; margin-top: 7px; color: var(--muted); font-size: 12px; }
+
+    .hero-visual {
+      position: relative;
+      min-height: min(690px, 72vh);
+    }
+
+    .hero-frame {
+      position: absolute;
+      width: 42%;
+      aspect-ratio: 9 / 16;
+      overflow: hidden;
+      border: 7px solid var(--surface-3);
+      border-radius: var(--radius);
+      box-shadow: 0 28px 70px var(--shadow);
+      background: var(--surface-2);
+    }
+
+    .hero-frame img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-frame:nth-child(1) { left: 3%; top: 15%; transform: rotate(-7deg); }
+    .hero-frame:nth-child(2) { left: 31%; top: 1%; transform: rotate(2deg); }
+    .hero-frame:nth-child(3) { right: 0; top: 20%; transform: rotate(8deg); }
+
+    .page-grid {
+      display: grid;
+      grid-template-columns: 248px minmax(0, 1fr);
+      gap: clamp(34px, 5vw, 76px);
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 clamp(22px, 5vw, 76px) 120px;
+    }
+
+    .side-nav {
+      position: sticky;
+      top: calc(var(--nav-h) + 28px);
+      align-self: start;
+      max-height: calc(100dvh - var(--nav-h) - 56px);
+      overflow: auto;
+      padding: 4px 10px 4px 0;
+    }
+
+    .side-nav strong { display: block; margin-bottom: 12px; font-size: 13px; }
+    .side-nav a {
+      display: block;
+      padding: 8px 10px;
+      border-left: 2px solid var(--line);
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 160ms ease, border-color 160ms ease, padding-left 160ms ease;
+    }
+
+    .side-nav a:hover { color: var(--ink); border-color: var(--accent); padding-left: 15px; }
+    .content { min-width: 0; }
+    .section { padding: 88px 0 20px; }
+    .section:first-child { padding-top: 18px; }
+    .section-header { margin-bottom: 34px; }
+    .section-header h2 { font-family: var(--serif); font-size: clamp(38px, 5vw, 66px); font-weight: 500; letter-spacing: -0.04em; }
+    .section-header p { margin: 16px 0 0; color: var(--muted); font-size: 17px; }
+
+    .notice {
+      padding: 20px 22px;
+      border-left: 3px solid var(--accent);
+      background: var(--surface);
+      color: var(--muted);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+
+    .notice strong { color: var(--ink); }
+
+    .video-embed {
+      width: min(100%, 430px);
+      margin: 26px auto 0;
+      aspect-ratio: 9 / 16;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-2);
+      box-shadow: 0 24px 60px var(--shadow);
+    }
+
+    .video-embed iframe {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: 0;
+    }
+
+    .video-link {
+      display: block;
+      width: fit-content;
+      margin: 14px auto 0;
+      color: var(--accent);
+      font-weight: 800;
+      text-underline-offset: 4px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .flow-item {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 14px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .flow-index {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      color: var(--accent);
+      font-weight: 850;
+    }
+
+    .flow-item h3 { font-size: 18px; }
+    .flow-item p { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+
+    .prompt-block {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--code);
+      box-shadow: 0 20px 54px var(--shadow);
+    }
+
+    .prompt-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 13px 14px 13px 18px;
+      border-bottom: 1px solid rgba(241, 237, 228, 0.14);
+      color: #d6d0c5;
+      font-size: 13px;
+      font-weight: 760;
+    }
+
+    .prompt-block pre {
+      margin: 0;
+      padding: 22px;
+      overflow: auto;
+      color: #eee9df;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.72;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .copy-button { color: #eee9df; background: #292824; border-color: rgba(238, 233, 223, 0.2); }
+    .copy-button[data-copied="true"] { background: var(--accent); color: var(--accent-ink); }
+
+    .audio-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+    }
+
+    .audio-card {
+      padding: 22px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .audio-card h3 { font-size: 19px; }
+    .audio-card p { margin: 8px 0 16px; color: var(--muted); font-size: 14px; }
+    .audio-card audio { width: 100%; height: 44px; }
+    .script { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    .script strong { color: var(--ink); }
+
+    .asset-group { margin-top: 42px; }
+    .asset-group h3 { margin-bottom: 18px; font-size: 23px; }
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .asset-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .asset-media {
+      aspect-ratio: 4 / 3;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background-color: var(--surface-2);
+      background-image:
+        linear-gradient(45deg, color-mix(in srgb, var(--surface-3) 65%, transparent) 25%, transparent 25%),
+        linear-gradient(-45deg, color-mix(in srgb, var(--surface-3) 65%, transparent) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, color-mix(in srgb, var(--surface-3) 65%, transparent) 75%),
+        linear-gradient(-45deg, transparent 75%, color-mix(in srgb, var(--surface-3) 65%, transparent) 75%);
+      background-size: 24px 24px;
+      background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+    }
+
+    .asset-media img { width: 100%; height: 100%; object-fit: contain; }
+    .asset-media.cover img { object-fit: cover; }
+    .asset-info { padding: 15px; }
+    .asset-info code { display: block; color: var(--ink); font-size: 12px; overflow-wrap: anywhere; }
+    .asset-info span { display: block; margin-top: 7px; color: var(--muted); font-size: 12px; }
+    .status { margin-top: 9px; color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    .scene {
+      margin-top: 80px;
+      padding-top: 30px;
+      border-top: 1px solid var(--line);
+    }
+
+    .scene-head {
+      display: grid;
+      grid-template-columns: minmax(250px, 0.66fr) minmax(0, 1.34fr);
+      gap: clamp(28px, 5vw, 64px);
+      align-items: start;
+    }
+
+    .scene-preview {
+      width: min(100%, 390px);
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      box-shadow: 0 26px 64px var(--shadow);
+    }
+
+    .scene-preview img { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; }
+    .scene-preview figcaption { padding: 12px 14px; color: var(--muted); font-size: 12px; }
+    .scene-meta { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 18px; }
+    .meta-chip { padding: 7px 10px; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); font-size: 12px; }
+    .scene h3 { font-family: var(--serif); font-size: clamp(35px, 4.4vw, 56px); font-weight: 500; letter-spacing: -0.035em; }
+    .scene-summary { margin: 17px 0 0; color: var(--muted); font-size: 16px; }
+    .vo-box { margin-top: 22px; padding: 19px 20px; background: var(--surface); border-radius: var(--radius); border: 1px solid var(--line); }
+    .vo-box strong { display: block; margin-bottom: 8px; color: var(--accent); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; }
+    .vo-box p { margin: 0; font-family: var(--serif); font-size: 20px; font-style: italic; }
+
+    .beat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .beat { padding: 18px; border-left: 2px solid var(--accent); background: var(--surface); border-radius: 0 var(--radius) var(--radius) 0; }
+    .beat strong { display: block; font-size: 14px; }
+    .beat span { display: block; margin-top: 7px; color: var(--muted); font-size: 13px; }
+
+    .scene-assets { margin-top: 28px; }
+    .scene-assets h4, .scene-prompts h4 { font-size: 18px; margin-bottom: 14px; }
+    .file-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .file-list code { padding: 7px 9px; border-radius: 8px; background: var(--surface-2); color: var(--muted); font-size: 11px; }
+    .scene-prompts { display: grid; gap: 16px; margin-top: 28px; }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    summary { padding: 17px 20px; cursor: pointer; font-weight: 780; }
+    details .details-body { padding: 0 20px 20px; color: var(--muted); }
+
+    .qa-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .check-card { padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .check-card h3 { font-size: 18px; }
+    .check-card ul { margin: 13px 0 0; padding-left: 20px; color: var(--muted); font-size: 14px; }
+    .check-card li + li { margin-top: 8px; }
+
+    .footer { margin-top: 90px; padding: 28px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+
+    @media (max-width: 1060px) {
+      .hero { grid-template-columns: 1fr 0.8fr; }
+      .page-grid { grid-template-columns: 1fr; }
+      .side-nav { position: static; max-height: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0 0 14px; }
+      .side-nav strong { width: 100%; }
+      .side-nav a { border: 1px solid var(--line); border-radius: 9px; padding: 7px 9px; }
+      .side-nav a:hover { padding-left: 9px; }
+    }
+
+    @media (max-width: 760px) {
+      :root { --nav-h: 60px; }
+      .brand-sub, .print-button { display: none; }
+      .topbar { padding: 0 14px; }
+      .hero { min-height: auto; grid-template-columns: 1fr; padding: 54px 18px 72px; }
+      .hero-visual { min-height: 470px; }
+      .hero-frame { width: 45%; }
+      .metric-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .page-grid { padding: 0 18px 76px; }
+      .section { padding-top: 68px; }
+      .flow, .audio-grid, .asset-grid, .scene-head, .beat-grid, .qa-grid { grid-template-columns: 1fr; }
+      .asset-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .scene-preview { width: min(78vw, 360px); margin: 0 auto; }
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 48px; }
+      .asset-grid { grid-template-columns: 1fr; }
+      .hero-visual { min-height: 400px; }
+      .hero-frame { border-width: 4px; }
+      .prompt-block pre { font-size: 12px; padding: 17px; }
+      .scene { margin-top: 60px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+
+    @media print {
+      .topbar, .side-nav, .copy-button, .theme-button, .print-button, audio { display: none !important; }
+      :root { color-scheme: light; --bg: #f4f2ec; --surface: #ffffff; --surface-2: #e9e6de; --ink: #20201e; --muted: #57534c; --line: #ccc7bc; --code: #1b1b19; }
+      .hero { min-height: auto; grid-template-columns: 1fr 0.7fr; page-break-after: always; }
+      .page-grid { display: block; }
+      .scene, .asset-group, .prompt-block { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img class="brand-mark" src="../project/public/assets/shared/logo_netflix_n.svg" alt="Netflix N" />
+      <span>Netflix Reel <span class="brand-sub">Production Guide</span></span>
+    </div>
+    <div class="top-actions">
+      <button class="print-button" type="button" onclick="window.print()">In tài liệu</button>
+      <button class="theme-button" type="button" id="themeButton">Đổi giao diện</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow">Asset sheet, voice-over và prompt</p>
+        <h1>Tạo Netflix Reel <em>từ đầu</em></h1>
+        <p class="hero-lead">Một bộ tài liệu thực hành để chuẩn bị asset, khóa lời đọc, dựng từng cảnh và kiểm tra video bằng ChatGPT cùng Remotion.</p>
+        <div class="metric-row" aria-label="Thông số dự án">
+          <div class="metric"><strong>1080 × 1920</strong><span>Khung dọc 9:16</span></div>
+          <div class="metric"><strong>30 fps</strong><span>Tốc độ khung hình</span></div>
+          <div class="metric"><strong>35,13 giây</strong><span>Phần kể chuyện Việt</span></div>
+          <div class="metric"><strong>54,47 giây</strong><span>Bản Việt có CTA</span></div>
+        </div>
+      </div>
+      <div class="hero-visual" aria-label="Ảnh preview Netflix Reel">
+        <div class="hero-frame"><img src="netflix-reel-previews/scene-1.png" alt="Preview Scene 1: nhân vật trẻ trước cửa hàng" /></div>
+        <div class="hero-frame"><img src="netflix-reel-previews/scene-2.png" alt="Preview Scene 2: lời đề nghị 50 triệu đô" /></div>
+        <div class="hero-frame"><img src="netflix-reel-previews/scene-5b.png" alt="Preview Scene 5: lời từ chối đắt giá nhất" /></div>
+      </div>
+    </section>
+
+    <div class="page-grid">
+      <nav class="side-nav" aria-label="Mục lục">
+        <strong>Nội dung</strong>
+        <a href="#tong-quan">Tổng quan</a>
+        <a href="#quy-trinh">Quy trình từ đầu</a>
+        <a href="#prompt-tong">Prompt tổng</a>
+        <a href="#audio">Audio và voice-over</a>
+        <a href="#asset-sheet">Asset sheet</a>
+        <a href="#scene-1">Scene 1</a>
+        <a href="#scene-2">Scene 2</a>
+        <a href="#scene-3">Scene 3</a>
+        <a href="#scene-4">Scene 4</a>
+        <a href="#scene-5">Scene 5</a>
+        <a href="#scene-cta">Scene CTA</a>
+        <a href="#kiem-tra">Kiểm tra và render</a>
+      </nav>
+
+      <div class="content">
+        <section class="section" id="tong-quan">
+          <div class="section-header">
+            <h2>Bản thiết kế của video</h2>
+            <p>Video dùng cấu trúc tương phản: một lời từ chối nhỏ ở đầu dẫn đến kết quả rất lớn ở cuối. Voice-over là trục thời gian, hình ảnh và chữ bám theo từng khoảng nghỉ.</p>
+          </div>
+          <div class="notice">
+            <strong>Nguyên tắc quan trọng:</strong> Không dựng hiệu ứng trước khi khóa kịch bản và voice-over. Khi thay audio, phải đo lại thời lượng, điểm cắt scene, caption và thời điểm xuất hiện của chữ.
+          </div>
+          <div class="video-embed">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/CcbWg6tQWvM"
+              title="Netflix Reel tiếng Việt hoàn chỉnh"
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <a class="video-link" href="https://youtube.com/shorts/CcbWg6tQWvM" target="_blank" rel="noopener noreferrer">Xem video trên YouTube</a>
+          <div class="beat-grid" style="margin-top: 18px">
+            <div class="beat"><strong>Ngôn ngữ hình ảnh</strong><span>Tài liệu điện ảnh, cut-out, texture giấy, film grain, chuyển động hơi giật ở 12 fps.</span></div>
+            <div class="beat"><strong>Màu chủ đạo</strong><span>Đen than, trắng ngà, vàng phim. Đỏ chỉ xuất hiện khi phục vụ nhận diện Netflix.</span></div>
+            <div class="beat"><strong>Kiểu chữ</strong><span>Serif nghiêng cho câu kể và sans đậm cho con số, nhãn, CTA.</span></div>
+            <div class="beat"><strong>Cấu trúc bản Việt</strong><span>Scene 1 đến Scene 5 dài 35,13 giây. CTA riêng dài 19,33 giây.</span></div>
+          </div>
+        </section>
+
+        <section class="section" id="quy-trinh">
+          <div class="section-header">
+            <h2>Quy trình từ một thư mục trống</h2>
+            <p>Mỗi phần có một đầu ra rõ ràng. Chỉ chuyển sang phần tiếp theo khi đầu ra hiện tại đã được duyệt.</p>
+          </div>
+          <div class="flow">
+            <article class="flow-item"><div class="flow-index">1</div><div><h3>Khóa brief</h3><p>Chốt người xem, thông điệp, thời lượng, ngôn ngữ, tỷ lệ và CTA.</p></div></article>
+            <article class="flow-item"><div class="flow-index">2</div><div><h3>Kiểm tra dữ liệu</h3><p>Xác minh tên riêng, mốc năm, số tiền, doanh thu và cách diễn đạt.</p></div></article>
+            <article class="flow-item"><div class="flow-index">3</div><div><h3>Viết lời đọc</h3><p>Mỗi scene chỉ mang một ý. Câu ngắn, có khoảng nghỉ tự nhiên giữa các scene.</p></div></article>
+            <article class="flow-item"><div class="flow-index">4</div><div><h3>Thu voice-over</h3><p>Xuất WAV hoặc MP3 rõ tiếng. Giữ bản gốc và không thay tốc độ sau khi đã chia scene.</p></div></article>
+            <article class="flow-item"><div class="flow-index">5</div><div><h3>Lập asset sheet</h3><p>Ghi tên file, kích thước, nền trong suốt, scene sử dụng và nhân vật tham chiếu.</p></div></article>
+            <article class="flow-item"><div class="flow-index">6</div><div><h3>Tạo và duyệt asset</h3><p>Tạo ảnh theo từng scene. Kiểm tra nhân vật nhất quán trước khi đưa vào mã nguồn.</p></div></article>
+            <article class="flow-item"><div class="flow-index">7</div><div><h3>Dựng scene riêng</h3><p>Mở từng composition Scene1 đến Scene5. Duyệt bố cục trước, sau đó mới tinh chỉnh chuyển động.</p></div></article>
+            <article class="flow-item"><div class="flow-index">8</div><div><h3>Ghép theo audio</h3><p>Cắt scene giữa khoảng nghỉ, đồng bộ caption theo lời đọc và giữ audio chạy liên tục.</p></div></article>
+            <article class="flow-item"><div class="flow-index">9</div><div><h3>Duyệt bằng frame</h3><p>Xuất ảnh đúng thời điểm headline, con số và nhân vật xuất hiện để phát hiện lỗi nhanh.</p></div></article>
+            <article class="flow-item"><div class="flow-index">10</div><div><h3>Render bản cuối</h3><p>Xuất video, mở file đã render, kiểm tra hình, tiếng, caption và ba giây cuối.</p></div></article>
+          </div>
+        </section>
+
+        <section class="section" id="prompt-tong">
+          <div class="section-header">
+            <h2>Prompt tổng để điều phối dự án</h2>
+            <p>Dùng prompt này sau khi đã đặt toàn bộ asset và audio vào đúng thư mục. AI sẽ kiểm kê trước, dựng sau và không tự thay nội dung đã khóa.</p>
+          </div>
+          <div class="prompt-block">
+            <div class="prompt-head"><span>Prompt tổng Netflix Reel</span><button class="copy-button" type="button">Sao chép</button></div>
+            <pre><code>Tôi muốn dựng một video dọc Netflix Reel bằng Remotion dựa trên asset và audio đã chuẩn bị trong project/public/assets.
+
+Mục tiêu:
+- Kể câu chuyện Netflix từng đề nghị Blockbuster mua lại với giá 50 triệu đô, bị từ chối, sau đó phát triển mạnh.
+- Phong cách tài liệu điện ảnh, texture giấy, cut-out, film grain, typography serif nghiêng kết hợp sans đậm.
+- Khung hình 1080 × 1920, 30 fps.
+- Bản tiếng Việt gồm 5 scene kể chuyện và một CTA riêng.
+
+Quy tắc làm việc:
+1. Đọc toàn bộ README, engine, asset map, caption data và các scene hiện có trước khi sửa.
+2. Kiểm kê asset. Báo file thiếu, file dự phòng và file đang được sử dụng.
+3. Đo chính xác thời lượng audio. Tìm khoảng nghỉ để đề xuất điểm cắt scene.
+4. Lập beat map gồm thời gian, voice-over, chữ trên màn hình, asset và chuyển động.
+5. Giữ một composition tiếng Anh tên Reel, một composition tiếng Việt tên ReelVI và CTA riêng.
+6. Dựng từng scene độc lập để có thể xem riêng trong Remotion Studio.
+7. Không ghi đè asset tốt. File thử nghiệm phải có hậu tố v2 hoặc v3.
+8. Không tạo lại ảnh nếu asset phù hợp đã có.
+9. Nhân vật Reed ở Scene 1, Scene 5 và ảnh kết phải là cùng một người ở các độ tuổi khác nhau.
+10. Nhân vật Blockbuster ở Scene 2 và Scene 4 phải là cùng một người trước và sau thất bại.
+11. Dùng frame, interpolate và spring của Remotion cho chuyển động. Không dùng CSS animation chạy theo thời gian thực.
+12. Sau mỗi scene, render một frame đại diện để tôi duyệt.
+13. Chỉ render toàn bộ video sau khi dữ liệu, caption, hình và CTA đã được duyệt.
+
+Tôi là người không chuyên. Hãy tự thực hiện thao tác kỹ thuật, giải thích bằng tiếng Việt dễ hiểu và chỉ hỏi khi cần một quyết định nội dung.</code></pre>
+          </div>
+        </section>
+
+        <section class="section" id="audio">
+          <div class="section-header">
+            <h2>Audio và voice-over</h2>
+            <p>Nghe trực tiếp từng file. Thời lượng được đọc từ file thật trong dự án, không phải ước lượng.</p>
+          </div>
+          <div class="audio-grid">
+            <article class="audio-card">
+              <h3>Voice-over tiếng Việt</h3>
+              <p><code>assets/audio/vi-netflix-vo.wav</code> | 35,130958 giây</p>
+              <audio controls preload="metadata" src="../project/public/assets/audio/vi-netflix-vo.wav"></audio>
+              <div class="script"><strong>Lời đọc:</strong> Năm 2000, một startup nhỏ tên Netflix đã đề nghị Blockbuster mua lại họ. Mức giá chỉ là 50 triệu đô. Nhưng Blockbuster đã cười nhạo và đuổi họ khỏi phòng. Vì vậy, Netflix xây dựng một mô hình hoàn toàn ngược lại: không phí trả muộn, không cửa hàng, khách hàng là ưu tiên số một. Mười năm sau, Blockbuster đóng cửa hàng nghìn chi nhánh và tuyên bố phá sản. Ngày nay, Netflix tạo ra 45 tỷ đô doanh thu mỗi năm, trở thành nền tảng streaming lớn nhất thế giới. Đó chính là lời từ chối đắt giá nhất trong lịch sử.</div>
+            </article>
+            <article class="audio-card">
+              <h3>Voice-over tiếng Anh</h3>
+              <p><code>assets/audio/vo.wav</code> | 32,970958 giây</p>
+              <audio controls preload="metadata" src="../project/public/assets/audio/vo.wav"></audio>
+              <div class="script"><strong>Mục đích:</strong> Dùng cho composition <code>Reel</code>. Caption tiếng Anh có timestamp theo từng từ trong <code>caption-data.ts</code>.</div>
+            </article>
+            <article class="audio-card" style="grid-column: 1 / -1">
+              <h3>Voice-over CTA</h3>
+              <p><code>assets/cta/vo-cta.wav</code> | 19,330958 giây</p>
+              <audio controls preload="metadata" src="../project/public/assets/cta/vo-cta.wav"></audio>
+              <div class="script"><strong>Lời đọc:</strong> Chào bạn, mình là Sơn. Đây là video được tạo hoàn toàn bởi ChatGPT và hệ thống quy trình Skills. Với khả năng của AI, bạn không cần biên tập mất thời gian như cách truyền thống. Bạn có muốn làm video như thế này, hãy tham gia chương trình Zoom online sắp tới nhé.</div>
+            </article>
+          </div>
+          <details style="margin-top: 16px">
+            <summary>Checklist thu voice-over mới</summary>
+            <div class="details-body">
+              <p>Đọc ở tốc độ tự nhiên, không cố ép đúng số giây. Giữ khoảng nghỉ 0,3 đến 0,8 giây giữa hai ý. Không dùng nhạc nền chung trong file voice-over. Xuất WAV 44,1 kHz hoặc 48 kHz. Sau khi thay file, yêu cầu AI đo lại thời lượng và khoảng nghỉ trước khi thay timeline.</p>
+            </div>
+          </details>
+        </section>
+
+        <section class="section" id="asset-sheet">
+          <div class="section-header">
+            <h2>Asset sheet đầy đủ</h2>
+            <p>Tất cả asset đang nằm trong <code>project/public/assets</code>. Ảnh có nền trong suốt được đặt trên nền caro để dễ kiểm tra viền cắt.</p>
+          </div>
+
+          <div class="asset-group">
+            <h3>Asset dùng chung</h3>
+            <div class="asset-grid">
+              <figure class="asset-card"><div class="asset-media cover"><img loading="lazy" src="../project/public/assets/shared/bg_black.jpg" alt="Texture giấy đen" /></div><figcaption class="asset-info"><code>shared/bg_black.jpg</code><span>1600 × 2413 | nền Scene 4</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media cover"><img loading="lazy" src="../project/public/assets/shared/bg_paper.jpg" alt="Texture giấy sáng" /></div><figcaption class="asset-info"><code>shared/bg_paper.jpg</code><span>1600 × 1067 | nền Scene 1</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media cover"><img loading="lazy" src="../project/public/assets/shared/grain.jpg" alt="Film grain" /></div><figcaption class="asset-info"><code>shared/grain.jpg</code><span>2048 × 2048 | lớp film</span><div class="status">Đang dùng toàn video</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media cover"><img loading="lazy" src="../project/public/assets/shared/grunge.jpg" alt="Texture grunge" /></div><figcaption class="asset-info"><code>shared/grunge.jpg</code><span>2048 × 2048 | lớp hao mòn</span><div class="status">Đang dùng toàn video</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/shared/logo_netflix_n.svg" alt="Logo Netflix N" /></div><figcaption class="asset-info"><code>shared/logo_netflix_n.svg</code><span>Vector | Scene 2</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/shared/logo_netflix_word.png" alt="Netflix wordmark" /></div><figcaption class="asset-info"><code>shared/logo_netflix_word.png</code><span>2226 × 678 | nhận diện</span><div class="status">Chưa dùng trong bản hiện tại</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/shared/logo_blockbuster.svg" alt="Logo Blockbuster" /></div><figcaption class="asset-info"><code>shared/logo_blockbuster.svg</code><span>Vector | nhận diện cửa hàng</span><div class="status">Chưa dùng trong bản hiện tại</div></figcaption></figure>
+            </div>
+          </div>
+
+          <div class="asset-group">
+            <h3>Nhân vật và bối cảnh</h3>
+            <div class="asset-grid">
+              <figure class="asset-card"><div class="asset-media cover"><img loading="lazy" src="../project/public/assets/scene1/store.png" alt="Cửa hàng video ban đêm" /></div><figcaption class="asset-info"><code>scene1/store.png</code><span>1024 × 1536 | bối cảnh đầu</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/scene1/reed-young.png" alt="Nhân vật Reed trẻ" /></div><figcaption class="asset-info"><code>scene1/reed-young.png</code><span>734 × 1518 | cut-out</span><div class="status">Ảnh nhận diện gốc</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/scene1/gold-frame.png" alt="Khung ảnh vàng" /></div><figcaption class="asset-info"><code>scene1/gold-frame.png</code><span>1024 × 1536 | khung xuyên cảnh</span><div class="status">Asset dự phòng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media cover"><img loading="lazy" src="../project/public/assets/scene1/cloud1.png" alt="Mây mỏng" /></div><figcaption class="asset-info"><code>scene1/cloud1.png</code><span>1536 × 1024 | lớp mây gần</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media cover"><img loading="lazy" src="../project/public/assets/scene1/cloud2.png" alt="Mây dày" /></div><figcaption class="asset-info"><code>scene1/cloud2.png</code><span>1536 × 1024 | lớp mây xa</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/scene2/boss-laughing.png" alt="Sếp Blockbuster đang cười" /></div><figcaption class="asset-info"><code>scene2/boss-laughing.png</code><span>1012 × 1491 | cut-out</span><div class="status">Ảnh nhận diện gốc</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media cover"><img loading="lazy" src="../project/public/assets/scene2/money-room.png" alt="Phòng tiền" /></div><figcaption class="asset-info"><code>scene2/money-room.png</code><span>1536 × 1024 | bối cảnh dự phòng</span><div class="status">Chưa dùng trong bản hiện tại</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/scene2/hand-logo.png" alt="Bàn tay đặt logo" /></div><figcaption class="asset-info"><code>scene2/hand-logo.png</code><span>1273 × 392 | cut-out</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/scene2/hand-cash.png" alt="Bàn tay cầm tiền" /></div><figcaption class="asset-info"><code>scene2/hand-cash.png</code><span>1445 × 524 | cut-out</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/scene2/smoke.png" alt="Khói xì gà" /></div><figcaption class="asset-info"><code>scene2/smoke.png</code><span>1024 × 1536 | alpha</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media cover"><img loading="lazy" src="../project/public/assets/scene3/desk.jpg" alt="Bàn gỗ tối" /></div><figcaption class="asset-info"><code>scene3/desk.jpg</code><span>1600 × 2400 | nền Scene 3</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/scene3/news-late-fees.png" alt="Trang báo không phí trả muộn" /></div><figcaption class="asset-info"><code>scene3/news-late-fees.png</code><span>1006 × 1502 | cut-out</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/scene3/news-no-stores.png" alt="Trang báo không cửa hàng" /></div><figcaption class="asset-info"><code>scene3/news-no-stores.png</code><span>1006 × 1514 | cut-out</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/scene3/news-customer-first.png" alt="Trang báo khách hàng là ưu tiên" /></div><figcaption class="asset-info"><code>scene3/news-customer-first.png</code><span>977 × 1425 | cut-out</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/scene4/boss-defeated.png" alt="Sếp Blockbuster thất bại" /></div><figcaption class="asset-info"><code>scene4/boss-defeated.png</code><span>870 × 1467 | cùng người Scene 2</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media cover"><img loading="lazy" src="../project/public/assets/scene4/closed-sign.jpg" alt="Biển đóng cửa" /></div><figcaption class="asset-info"><code>scene4/closed-sign.jpg</code><span>1600 × 2400 | tư liệu phụ</span><div class="status">Chưa dùng trong bản hiện tại</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media cover"><img loading="lazy" src="../project/public/assets/scene4/chain-lock.jpg" alt="Dây xích và khóa" /></div><figcaption class="asset-info"><code>scene4/chain-lock.jpg</code><span>1600 × 2400 | tư liệu phụ</span><div class="status">Chưa dùng trong bản hiện tại</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/scene5/globe.png" alt="Địa cầu đỏ" /></div><figcaption class="asset-info"><code>scene5/globe.png</code><span>1024 × 1536 | nền phát sáng</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media"><img loading="lazy" src="../project/public/assets/scene5/reed-triumph.png" alt="Nhân vật Reed chiến thắng" /></div><figcaption class="asset-info"><code>scene5/reed-triumph.png</code><span>846 × 1490 | cùng người Scene 1</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media cover"><img loading="lazy" src="../project/public/assets/scene6/reed-rich-v2.png" alt="Nhân vật Reed lớn tuổi tại bàn làm việc" /></div><figcaption class="asset-info"><code>scene6/reed-rich-v2.png</code><span>941 × 1672 | ảnh kết hiện tại</span><div class="status">Đang dùng</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media cover"><img loading="lazy" src="../project/public/assets/scene6/reed-rich.jpg" alt="Ảnh kết phiên bản cũ" /></div><figcaption class="asset-info"><code>scene6/reed-rich.jpg</code><span>1024 × 1280 | bản cũ</span><div class="status">Dự phòng để so sánh</div></figcaption></figure>
+              <figure class="asset-card"><div class="asset-media cover"><img loading="lazy" src="../project/public/assets/cta/son-studio.jpeg" alt="Sơn trong phòng thu" /></div><figcaption class="asset-info"><code>cta/son-studio.jpeg</code><span>2752 × 1536 | ảnh CTA</span><div class="status">Đang dùng</div></figcaption></figure>
+            </div>
+          </div>
+        </section>
+
+        <section class="scene" id="scene-1">
+          <div class="scene-head">
+            <figure class="scene-preview"><img loading="lazy" src="netflix-reel-previews/scene-1.png" alt="Frame đại diện Scene 1" /><figcaption>Frame đại diện tại phần ảnh đã chuyển sang toàn màn hình.</figcaption></figure>
+            <div>
+              <div class="scene-meta"><span class="meta-chip">00:00 - 00:05,60</span><span class="meta-chip">168 frame Việt</span><span class="meta-chip">Hook mở đầu</span></div>
+              <h3>Scene 1: Lời đề nghị</h3>
+              <p class="scene-summary">Mở bằng ảnh treo trên tường giấy. Máy quay tiến xuyên qua khung, ảnh từ đen trắng chuyển thành màu, nhân vật trẻ đứng trước cửa hàng.</p>
+              <div class="vo-box"><strong>Voice-over</strong><p>“Năm 2000, một startup nhỏ tên Netflix đã đề nghị Blockbuster mua lại họ.”</p></div>
+              <div class="beat-grid">
+                <div class="beat"><strong>Ảnh treo trên tường</strong><span>Giới thiệu mốc “NĂM 2000”, texture giấy và cảm giác hồ sơ lịch sử.</span></div>
+                <div class="beat"><strong>Bay xuyên khung</strong><span>Máy quay tăng tốc, viền ảnh biến mất khỏi màn hình.</span></div>
+                <div class="beat"><strong>Ảnh chuyển màu</strong><span>Không gian cửa hàng trở thành cảnh thật toàn màn hình.</span></div>
+                <div class="beat"><strong>Chữ theo lời đọc</strong><span>“một startup nhỏ”, sau đó “mang tên Netflix”.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="scene-assets"><h4>Asset cần có</h4><div class="file-list"><code>scene1/store.png</code><code>scene1/reed-young.png</code><code>scene1/cloud1.png</code><code>scene1/cloud2.png</code><code>shared/bg_paper.jpg</code><code>shared/logo_blockbuster.svg (tùy chọn)</code></div></div>
+          <div class="scene-prompts">
+            <div class="prompt-block"><div class="prompt-head"><span>Prompt tạo asset Scene 1 nếu làm lại</span><button class="copy-button" type="button">Sao chép</button></div><pre><code>Tạo bộ asset cho Scene 1 của video dọc 9:16, phong cách documentary cinematic năm 2000.
+
+Asset A: cửa hàng cho thuê băng đĩa ban đêm, góc chính diện hơi thấp, biển hiệu để trống để ghép logo sau, ánh đèn vàng cũ, đường phố tối, không có người, bố cục dọc 1024 × 1536.
+
+Asset B: người đàn ông Mỹ khoảng 39 tuổi, tóc tối màu, trang phục doanh nhân giản dị năm 2000, đứng thẳng, nhìn về phía cửa hàng, toàn thân, ánh sáng khớp cảnh đêm, nền trong suốt, không cắt đầu hoặc chân.
+
+Asset C và D: hai lớp mây trắng xám khác mật độ, nền đen sạch hoặc alpha, không có chữ.
+
+Yêu cầu nhận diện: lưu Asset B làm ảnh tham chiếu nhân vật cho Scene 5 và ảnh kết. Không thêm logo, chữ hoặc watermark vào ảnh.</code></pre></div>
+            <div class="prompt-block"><div class="prompt-head"><span>Prompt dựng Scene 1 khi đã đủ asset</span><button class="copy-button" type="button">Sao chép</button></div><pre><code>Hãy dựng Scene 1 bằng các asset đã có trong project/public/assets/scene1 và shared.
+
+Thời lượng bản Việt: 168 frame tại 30 fps.
+Voice-over: “Năm 2000, một startup nhỏ tên Netflix đã đề nghị Blockbuster mua lại họ.”
+
+Bố cục và chuyển động:
+1. Bắt đầu bằng texture giấy sáng và một ảnh đen trắng treo giữa tường.
+2. Hiển thị “NĂM 2000” dưới ảnh, kiểu chữ serif, rõ nhưng không lấn ảnh.
+3. Máy quay tiến chậm trong nửa đầu, sau đó tăng tốc bay xuyên qua khung.
+4. Khi ảnh phủ toàn màn hình, chuyển từ đen trắng sang màu trong khoảng 12 frame.
+5. Dùng hai lớp mây trôi khác tốc độ để tạo chiều sâu.
+6. Nhân vật reed-young đứng giữa gần đáy, chỉ rung rất nhẹ theo nhịp 12 fps.
+7. Hiển thị lần lượt “một startup nhỏ” và “mang tên Netflix” theo câu đọc.
+8. Dùng Img cho ảnh, interpolate và spring cho chuyển động. Không dùng CSS animation.
+9. Render một frame lúc ảnh còn trong khung và một frame sau khi ảnh đã phủ toàn màn hình để kiểm tra.</code></pre></div>
+          </div>
+        </section>
+
+        <section class="scene" id="scene-2">
+          <div class="scene-head">
+            <figure class="scene-preview"><img loading="lazy" src="netflix-reel-previews/scene-2.png" alt="Frame đại diện Scene 2" /><figcaption>Con số 50 triệu đô và nhân vật Blockbuster ở trung tâm.</figcaption></figure>
+            <div>
+              <div class="scene-meta"><span class="meta-chip">00:05,60 - 00:11,93</span><span class="meta-chip">190 frame Việt</span><span class="meta-chip">Xung đột</span></div>
+              <h3>Scene 2: 50 triệu đô</h3>
+              <p class="scene-summary">Hai bàn tay đưa logo và tiền vào khung hình trên nền đỏ. Con số quay như máy slot, sau đó nhân vật Blockbuster bật lên và cười nhạo.</p>
+              <div class="vo-box"><strong>Voice-over</strong><p>“Mức giá chỉ là 50 triệu đô. Nhưng Blockbuster đã cười nhạo và đuổi họ khỏi phòng.”</p></div>
+              <div class="beat-grid">
+                <div class="beat"><strong>Trao đổi hai phía</strong><span>Tay trái đưa Netflix, tay phải đưa tiền, khung kim cương vẽ tay.</span></div>
+                <div class="beat"><strong>Con số dừng mạnh</strong><span>“50 TRIỆU ĐÔ” phải đúng đơn vị, không hiển thị nghìn tỷ.</span></div>
+                <div class="beat"><strong>Nhân vật bật lên</strong><span>Sếp Blockbuster xuất hiện, hơi phóng đại và có khói xì gà.</span></div>
+                <div class="beat"><strong>Cú chốt tiêu cực</strong><span>Chớp âm bản, mất màu và chữ “cười nhạo”, “đuổi khỏi phòng”.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="scene-assets"><h4>Asset cần có</h4><div class="file-list"><code>scene2/boss-laughing.png</code><code>scene2/hand-logo.png</code><code>scene2/hand-cash.png</code><code>scene2/smoke.png</code><code>shared/logo_netflix_n.svg</code></div></div>
+          <div class="scene-prompts">
+            <div class="prompt-block"><div class="prompt-head"><span>Prompt tạo asset Scene 2 nếu làm lại</span><button class="copy-button" type="button">Sao chép</button></div><pre><code>Tạo bộ cut-out cho Scene 2 trên nền trong suốt.
+
+Asset A: giám đốc công ty cho thuê video khoảng 45 đến 55 tuổi, vest doanh nhân cuối thập niên 1990, đang ngả người cười lớn, cầm xì gà, toàn thân, ánh sáng sân khấu đỏ vàng, biểu cảm tự tin thái quá.
+
+Asset B: cánh tay và bàn tay mở đi từ trái sang phải, lòng bàn tay hướng lên để đặt logo, không có logo sẵn.
+
+Asset C: cánh tay đi từ phải sang trái, bàn tay nắm một xấp tiền đô, góc nhìn phù hợp để hai bàn tay đối đầu nhau.
+
+Asset D: luồng khói xì gà tách nền, mềm ở phần đỉnh, không có khung đen.
+
+Yêu cầu: toàn bộ cut-out phải đủ vùng biên, không cắt bàn tay, không watermark. Lưu khuôn mặt Asset A làm tham chiếu để tạo phiên bản thất bại sau 10 năm ở Scene 4.</code></pre></div>
+            <div class="prompt-block"><div class="prompt-head"><span>Prompt dựng Scene 2 khi đã đủ asset</span><button class="copy-button" type="button">Sao chép</button></div><pre><code>Hãy dựng Scene 2 bằng asset hiện có, thời lượng 190 frame tại 30 fps cho bản Việt.
+
+Voice-over: “Mức giá chỉ là 50 triệu đô. Nhưng Blockbuster đã cười nhạo và đuổi họ khỏi phòng.”
+
+Yêu cầu:
+1. Dùng nền đỏ tối dạng sunburst, không thêm ảnh nền mới.
+2. Tay cầm logo đi vào từ trái, tay cầm tiền đi vào từ phải. Mỗi tay có một khung kim cương màu vàng được vẽ theo thời gian.
+3. Con số trung tâm phải kết thúc chính xác ở “50 TRIỆU ĐÔ”. Kiểm tra không có “nghìn tỷ”, “trillion” hoặc đơn vị sai trong bản Việt.
+4. Cho boss-laughing đi lên từ đáy bằng spring, tăng nhẹ kích thước để tạo cảm giác ngạo mạn.
+5. Gắn smoke vào đúng đầu xì gà, cho khói bay lên và lệch nhẹ theo thời gian.
+6. Hiển thị “cười nhạo”, sau đó “đuổi khỏi phòng” trong hộp vàng.
+7. Kết cảnh bằng ba chớp ngắn, giảm màu nhân vật và tăng tương phản.
+8. Render frame đúng lúc “50 TRIỆU ĐÔ” dừng và frame lúc boss xuất hiện để duyệt.</code></pre></div>
+          </div>
+        </section>
+
+        <section class="scene" id="scene-3">
+          <div class="scene-head">
+            <figure class="scene-preview"><img loading="lazy" src="netflix-reel-previews/scene-3.png" alt="Frame đại diện Scene 3" /><figcaption>Ba trang báo rơi lên bàn gỗ theo từng ý trong lời đọc.</figcaption></figure>
+            <div>
+              <div class="scene-meta"><span class="meta-chip">00:11,93 - 00:20,43</span><span class="meta-chip">255 frame Việt</span><span class="meta-chip">Giải pháp</span></div>
+              <h3>Scene 3: Mô hình ngược lại</h3>
+              <p class="scene-summary">Một bàn gỗ tối làm nền. Ba trang báo rơi vào theo ba ý: không phí trả muộn, không cửa hàng và khách hàng là ưu tiên.</p>
+              <div class="vo-box"><strong>Voice-over</strong><p>“Vì vậy, Netflix xây dựng một mô hình hoàn toàn ngược lại: không phí trả muộn, không cửa hàng, khách hàng là ưu tiên số một.”</p></div>
+              <div class="beat-grid">
+                <div class="beat"><strong>Mở nét từ bàn gỗ</strong><span>Ảnh nền đi từ hơi mờ sang rõ, máy quay tiến rất chậm.</span></div>
+                <div class="beat"><strong>Trang báo đầu</strong><span>“Không phí trả muộn” rơi từ trái và xoay nhẹ.</span></div>
+                <div class="beat"><strong>Trang báo thứ hai</strong><span>“Không cửa hàng” đi từ phải vào, chồng lên trang trước.</span></div>
+                <div class="beat"><strong>Trang báo cuối</strong><span>“Khách hàng là ưu tiên” đi từ dưới lên và hoàn tất bố cục.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="scene-assets"><h4>Asset cần có</h4><div class="file-list"><code>scene3/desk.jpg</code><code>scene3/news-late-fees.png</code><code>scene3/news-no-stores.png</code><code>scene3/news-customer-first.png</code></div></div>
+          <div class="scene-prompts">
+            <div class="prompt-block"><div class="prompt-head"><span>Prompt tạo asset Scene 3 nếu làm lại</span><button class="copy-button" type="button">Sao chép</button></div><pre><code>Tạo bộ asset báo chí cho Scene 3, phong cách báo kinh doanh đầu những năm 2000.
+
+Asset A: mặt bàn gỗ tối nhìn gần như từ trên xuống, ánh sáng tập trung ở giữa, bố cục dọc, không có đồ vật và không có chữ.
+
+Asset B, C, D: ba trang báo riêng biệt, cùng một masthead và cùng hệ thống trình bày. Nội dung hình ảnh lần lượt đại diện cho “không phí trả muộn”, “không cửa hàng”, “khách hàng là ưu tiên số một”. Tạo toàn trang, viền giấy hơi cũ, nền trong suốt, không cắt góc.
+
+Lưu ý: nếu chữ do AI tạo bị sai, hãy tạo trang báo với vùng headline sạch và thêm headline bằng mã nguồn Remotion. Không dùng chữ sai chính tả trong asset cuối.</code></pre></div>
+            <div class="prompt-block"><div class="prompt-head"><span>Prompt dựng Scene 3 khi đã đủ asset</span><button class="copy-button" type="button">Sao chép</button></div><pre><code>Dựng Scene 3 dài 255 frame tại 30 fps cho bản Việt.
+
+Voice-over: “Vì vậy, Netflix xây dựng một mô hình hoàn toàn ngược lại: không phí trả muộn, không cửa hàng, khách hàng là ưu tiên số một.”
+
+Yêu cầu:
+1. Desk phủ toàn màn hình, mở bằng blur nhẹ rồi rõ dần trong khoảng 14 frame authored.
+2. Hiển thị câu “một mô hình ngược lại.” ở phía trên rồi mờ đi trước khi các báo chồng nhiều.
+3. Ba trang báo vào lần lượt theo thứ tự late fees, no stores, customer first.
+4. Mỗi trang dùng spring mềm, có xoay và nảy nhẹ khi chạm bàn.
+5. Mỗi trang có rung ngẫu nhiên rất nhỏ, ổn định giữa các lần render.
+6. Thêm vignette để mắt tập trung vào vùng báo.
+7. Không để báo che hết headline của trang trước.
+8. Render một frame sau khi trang thứ ba đã vào để kiểm tra bố cục và chữ.</code></pre></div>
+          </div>
+        </section>
+
+        <section class="scene" id="scene-4">
+          <div class="scene-head">
+            <figure class="scene-preview"><img loading="lazy" src="netflix-reel-previews/scene-4.png" alt="Frame đại diện Scene 4" /><figcaption>Nhân vật Blockbuster thất bại trên nền tối với chữ phá sản.</figcaption></figure>
+            <div>
+              <div class="scene-meta"><span class="meta-chip">00:20,43 - 00:25,60</span><span class="meta-chip">155 frame Việt</span><span class="meta-chip">Hậu quả</span></div>
+              <h3>Scene 4: Phá sản</h3>
+              <p class="scene-summary">Cùng nhân vật ở Scene 2 nhưng lớn tuổi và thất bại. Máy quay tiến gần, nhân vật trượt sang trái để lộ thông điệp phá sản bên phải.</p>
+              <div class="vo-box"><strong>Voice-over</strong><p>“Mười năm sau, Blockbuster đóng cửa hàng nghìn chi nhánh và tuyên bố phá sản.”</p></div>
+              <div class="beat-grid">
+                <div class="beat"><strong>Nhân vật bị đánh bại</strong><span>Đứng giữa trên nền giấy đen, màu giảm, bóng dài dưới chân.</span></div>
+                <div class="beat"><strong>Chữ bên trái</strong><span>“đóng cửa”, “hàng nghìn”, “chi nhánh” xuất hiện theo lớp.</span></div>
+                <div class="beat"><strong>Chuyển trọng tâm</strong><span>Nhân vật trượt sang trái có blur chuyển động ngắn.</span></div>
+                <div class="beat"><strong>Câu kết bên phải</strong><span>“tuyên bố phá sản” hiện lên và được gạch chân vàng.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="scene-assets"><h4>Asset cần có</h4><div class="file-list"><code>scene4/boss-defeated.png</code><code>shared/bg_black.jpg</code><code>scene4/closed-sign.jpg</code><code>scene4/chain-lock.jpg</code></div></div>
+          <div class="scene-prompts">
+            <div class="prompt-block"><div class="prompt-head"><span>Prompt tạo asset Scene 4 nếu làm lại</span><button class="copy-button" type="button">Sao chép</button></div><pre><code>Dùng ảnh boss-laughing của Scene 2 làm tham chiếu nhận diện. Tạo cùng một người sau khoảng 10 năm, khuôn mặt vẫn nhận ra rõ.
+
+Nhân vật mặc vest cũ hơi nhăn, tư thế cúi, vai rũ, nét mặt thất bại, toàn thân, ánh sáng lạnh từ một phía, nền trong suốt. Không biến thành một người khác, không đổi màu da, kiểu tóc hoặc cấu trúc khuôn mặt ngoài thay đổi tuổi tác hợp lý.
+
+Tạo thêm hai ảnh tư liệu dọc: biển cửa hàng đóng cửa và dây xích có ổ khóa. Không có logo hoặc chữ giả. Hai ảnh này là asset phụ, chỉ dùng nếu bố cục cần thêm bằng chứng thị giác.</code></pre></div>
+            <div class="prompt-block"><div class="prompt-head"><span>Prompt dựng Scene 4 khi đã đủ asset</span><button class="copy-button" type="button">Sao chép</button></div><pre><code>Dựng Scene 4 dài 155 frame tại 30 fps cho bản Việt.
+
+Voice-over: “Mười năm sau, Blockbuster đóng cửa hàng nghìn chi nhánh và tuyên bố phá sản.”
+
+Yêu cầu:
+1. Dùng bg_black phủ toàn khung, tăng scale chậm từ điểm đặt chân của nhân vật.
+2. Đặt boss-defeated ở giữa, neo theo chân để phóng lớn không bị trượt.
+3. Tạo bóng từ chính cut-out nhân vật, lật dọc, kéo xiên và blur.
+4. Cho các dòng “đóng cửa”, “hàng nghìn”, “chi nhánh” xuất hiện lần lượt bên trái.
+5. Sau đó trượt nhân vật sang trái trong khoảng 20 frame và thêm blur ở giữa chuyển động.
+6. Hiển thị “tuyên bố phá sản” bên phải, vẽ gạch chân vàng theo thời gian.
+7. Giảm bão hòa, tăng tương phản và giữ toàn cảnh u tối.
+8. Render frame lúc cả hai cụm chữ đều còn đọc được để kiểm tra.</code></pre></div>
+          </div>
+        </section>
+
+        <section class="scene" id="scene-5">
+          <div class="scene-head">
+            <div>
+              <figure class="scene-preview"><img loading="lazy" src="netflix-reel-previews/scene-5a.png" alt="Frame phần đầu Scene 5" /><figcaption>Phần A: địa cầu, nhân vật chiến thắng và doanh thu.</figcaption></figure>
+              <figure class="scene-preview" style="margin-top: 16px"><img loading="lazy" src="netflix-reel-previews/scene-5b.png" alt="Frame phần cuối Scene 5" /><figcaption>Phần B: ảnh kết và lời từ chối đắt giá nhất.</figcaption></figure>
+            </div>
+            <div>
+              <div class="scene-meta"><span class="meta-chip">00:25,60 - 00:35,13</span><span class="meta-chip">286 frame Việt</span><span class="meta-chip">Kết quả và payoff</span></div>
+              <h3>Scene 5: Chiến thắng và cái giá</h3>
+              <p class="scene-summary">Scene kết có hai phần. Phần đầu cho thấy quy mô và doanh thu. Phần sau chuyển sang ảnh nhân vật trưởng thành, khóa câu chuyện bằng “lời từ chối đắt giá nhất trong lịch sử”.</p>
+              <div class="vo-box"><strong>Voice-over</strong><p>“Ngày nay, Netflix tạo ra 45 tỷ đô doanh thu mỗi năm, trở thành nền tảng streaming lớn nhất thế giới. Đó chính là lời từ chối đắt giá nhất trong lịch sử.”</p></div>
+              <div class="beat-grid">
+                <div class="beat"><strong>Nhân vật chiến thắng</strong><span>Cùng người Scene 1, lớn tuổi hơn, đứng trước địa cầu đỏ.</span></div>
+                <div class="beat"><strong>Doanh thu</strong><span>Ba dòng “Bốn mươi lăm”, “tỷ đô”, “doanh thu mỗi năm”.</span></div>
+                <div class="beat"><strong>Chuyển sang ảnh kết</strong><span>Cross-fade mềm, ảnh bàn làm việc tiến chậm và rõ dần.</span></div>
+                <div class="beat"><strong>Payoff</strong><span>“Lời từ chối”, “đắt giá nhất”, “trong lịch sử.” xuất hiện theo nhịp.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="scene-assets"><h4>Asset cần có</h4><div class="file-list"><code>scene5/reed-triumph.png</code><code>scene5/globe.png</code><code>scene6/reed-rich-v2.png</code><code>scene1/reed-young.png</code></div></div>
+          <div class="scene-prompts">
+            <div class="prompt-block"><div class="prompt-head"><span>Prompt tạo asset Scene 5 nếu làm lại</span><button class="copy-button" type="button">Sao chép</button></div><pre><code>Dùng reed-young ở Scene 1 làm ảnh tham chiếu nhận diện.
+
+Asset A: cùng người đàn ông sau khoảng 15 đến 20 năm, phong thái thành công nhưng tự nhiên, áo sơ mi hoặc vest tối, toàn thân, ánh sáng viền đỏ vàng, nền trong suốt. Giữ hình dáng mắt, mũi, miệng và đường hàm giống ảnh trẻ.
+
+Asset B: địa cầu dạng các điểm sáng đỏ trên nền đen hoặc alpha, nhìn thấy lục địa, bố cục dọc, không có chữ.
+
+Asset C: cùng nhân vật ở tuổi trưởng thành ngồi trong phòng thu hoặc văn phòng cao cấp, bố cục dọc 9:16, nhìn vào máy ảnh, ánh sáng điện ảnh, vùng trống đủ để đặt headline ở phía trên trái. Không tạo tiền mặt phô trương, không đổi người, không watermark.
+
+Trước khi thay asset, đặt ảnh trẻ và ảnh mới cạnh nhau để kiểm tra nhận diện. Lưu bản được duyệt thành reed-rich-v2.png, không xóa ảnh cũ.</code></pre></div>
+            <div class="prompt-block"><div class="prompt-head"><span>Prompt dựng Scene 5 khi đã đủ asset</span><button class="copy-button" type="button">Sao chép</button></div><pre><code>Dựng Scene 5 dài 286 frame tại 30 fps cho bản Việt, gồm hai phần trong cùng composition.
+
+Voice-over: “Ngày nay, Netflix tạo ra 45 tỷ đô doanh thu mỗi năm, trở thành nền tảng streaming lớn nhất thế giới. Đó chính là lời từ chối đắt giá nhất trong lịch sử.”
+
+Phần A:
+1. Đặt globe trên nền đen, blend screen và tạo quầng sáng nhẹ.
+2. Cho reed-triumph đi lên từ đáy bằng spring, giữ cùng nhận diện với Scene 1.
+3. Hiển thị lần lượt “Bốn mươi lăm”, “tỷ đô”, “doanh thu mỗi năm”.
+4. Vẽ một oval vàng quanh “tỷ đô”.
+
+Phần B:
+5. Cross-fade sang reed-rich-v2, ảnh tiến chậm và hết blur trong khoảng 12 frame authored.
+6. Hiển thị lần lượt “Lời từ chối”, “đắt giá nhất”, “trong lịch sử.”
+7. Dòng cuối dùng màu vàng, các dòng khác trắng ngà.
+8. Không dùng reed-rich.jpg nếu v2 đã được duyệt.
+9. Render một frame ở phần doanh thu và một frame ở câu kết để kiểm tra nhân vật và chữ.</code></pre></div>
+          </div>
+        </section>
+
+        <section class="scene" id="scene-cta">
+          <div class="scene-head">
+            <figure class="scene-preview"><img loading="lazy" src="netflix-reel-previews/scene-cta.png" alt="Frame đại diện CTA" /><figcaption>CTA cuối với ảnh Sơn, lời mời tham gia Zoom và nút vàng.</figcaption></figure>
+            <div>
+              <div class="scene-meta"><span class="meta-chip">00:35,13 - 00:54,47</span><span class="meta-chip">580 frame</span><span class="meta-chip">CTA cá nhân</span></div>
+              <h3>CTA: Từ video đến hành động</h3>
+              <p class="scene-summary">Ảnh ngang mở dưới dạng card để thấy microphone, sau đó chuyển thành portrait phủ màn hình. Nội dung đi qua ba ý: giới thiệu Sơn, quy trình AI, lời mời tham gia Zoom.</p>
+              <div class="vo-box"><strong>Voice-over</strong><p>“Chào bạn, mình là Sơn. Đây là video được tạo hoàn toàn bởi ChatGPT và hệ thống quy trình Skills. Với khả năng của AI, bạn không cần biên tập mất thời gian như cách truyền thống. Bạn có muốn làm video như thế này, hãy tham gia chương trình Zoom online sắp tới nhé.”</p></div>
+              <div class="beat-grid">
+                <div class="beat"><strong>Giới thiệu cá nhân</strong><span>Card ảnh ngang vào trước, chữ “CHÀO BẠN” và “Mình là Sơn.”</span></div>
+                <div class="beat"><strong>Quy trình AI</strong><span>Ý TƯỞNG, CHATGPT, SKILLS, VIDEO xuất hiện theo chuỗi.</span></div>
+                <div class="beat"><strong>Lợi ích thời gian</strong><span>Gạch bỏ “MẤT NHIỀU THỜI GIAN”, thay bằng “NHANH HƠN VỚI AI”.</span></div>
+                <div class="beat"><strong>Lời mời</strong><span>“Bạn muốn tạo video như thế này?” và nút “THAM GIA ZOOM ONLINE”.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="scene-assets"><h4>Asset cần có</h4><div class="file-list"><code>cta/son-studio.jpeg</code><code>cta/vo-cta.wav</code><code>shared/grain.jpg</code><code>shared/grunge.jpg</code></div></div>
+          <div class="scene-prompts">
+            <div class="prompt-block"><div class="prompt-head"><span>Prompt tạo hoặc chọn asset CTA</span><button class="copy-button" type="button">Sao chép</button></div><pre><code>Chọn một ảnh thật của người dẫn trong phòng thu hoặc không gian làm việc, khung ngang từ ngực trở lên, nhìn vào máy ảnh, có microphone hoặc dấu hiệu đang sản xuất nội dung. Ánh sáng ấm, nền gọn, khuôn mặt rõ.
+
+Ảnh phải đủ độ phân giải để vừa hiển thị toàn cảnh ngang, vừa crop thành portrait 9:16 mà không mất khuôn mặt. Vị trí nhân vật nên lệch nhẹ sang phải để bên trái có chỗ đặt chữ. Không tạo lại khuôn mặt bằng AI nếu đã có ảnh thật được duyệt.</code></pre></div>
+            <div class="prompt-block"><div class="prompt-head"><span>Prompt dựng CTA khi đã đủ asset và audio</span><button class="copy-button" type="button">Sao chép</button></div><pre><code>Dựng composition CTA dài đúng theo assets/cta/vo-cta.wav, hiện tại là 580 frame tại 30 fps.
+
+Yêu cầu:
+1. Đặt Audio trong chính SceneCTA để có thể xem và render CTA riêng.
+2. Mở bằng card ảnh ngang có viền trắng ngà và bóng vàng, giữ được microphone trong ảnh.
+3. Chuyển từ card sang ảnh portrait phủ toàn màn hình bằng cross-fade, crop ưu tiên khuôn mặt.
+4. Hiển thị “CHÀO BẠN” và “Mình là Sơn.” theo câu mở đầu.
+5. Tạo chuỗi “Ý TƯỞNG”, “CHATGPT”, “SKILLS”, “VIDEO” vào lần lượt, nối bằng một đường vàng vẽ tay.
+6. Hiển thị “MẤT NHIỀU THỜI GIAN”, vẽ nét đỏ gạch bỏ, sau đó bật “NHANH HƠN VỚI AI”.
+7. Ở đoạn cuối, làm tối ảnh nền và hiển thị câu hỏi cùng nút vàng “THAM GIA ZOOM ONLINE”.
+8. Nút chỉ pulse rất nhẹ, có vòng trắng vẽ quanh theo thời gian.
+9. Fade toàn cảnh ở cuối audio. Không cắt chữ hoặc âm tiết cuối.
+10. Render frame mở đầu, frame chuỗi quy trình và frame CTA cuối để duyệt.</code></pre></div>
+          </div>
+        </section>
+
+        <section class="section" id="kiem-tra">
+          <div class="section-header">
+            <h2>Kiểm tra trước khi render</h2>
+            <p>Không chỉ xem preview. File xuất cuối phải được mở và nghe lại từ đầu đến cuối.</p>
+          </div>
+          <div class="qa-grid">
+            <article class="check-card"><h3>Nội dung</h3><ul><li>Kiểm tra “50 triệu đô” và “45 tỷ đô”.</li><li>Tên Netflix và Blockbuster đúng chính tả.</li><li>Thông tin đã được xác minh trước khi xuất bản.</li><li>CTA nói rõ người xem cần làm gì.</li></ul></article>
+            <article class="check-card"><h3>Hình ảnh</h3><ul><li>Reed ở Scene 1 và Scene 5 là cùng một người.</li><li>Boss ở Scene 2 và Scene 4 là cùng một người.</li><li>Cut-out không có viền trắng hoặc vùng nền sót.</li><li>Ảnh không vỡ khi xem toàn màn hình.</li></ul></article>
+            <article class="check-card"><h3>Âm thanh và caption</h3><ul><li>Voice-over không bị cắt đầu hoặc cuối.</li><li>Caption đang sáng đúng từ được đọc.</li><li>Điểm cắt scene nằm trong khoảng nghỉ.</li><li>CTA đủ thời gian để nghe trọn câu cuối.</li></ul></article>
+            <article class="check-card"><h3>File xuất</h3><ul><li>Khung hình 1080 × 1920, 30 fps.</li><li>File MP4 có cả hình và tiếng.</li><li>Xem lại ba giây đầu và ba giây cuối.</li><li>Không đưa file render vào Git.</li></ul></article>
+          </div>
+          <div class="prompt-block" style="margin-top: 18px">
+            <div class="prompt-head"><span>Prompt kiểm tra và render cuối</span><button class="copy-button" type="button">Sao chép</button></div>
+            <pre><code>Hãy kiểm tra composition ReelVI trước khi render:
+
+1. Xác nhận kích thước 1080 × 1920, 30 fps và tổng thời lượng khớp audio.
+2. Kiểm tra mọi asset đều tải được, không có file thiếu.
+3. Kiểm tra các con số 50 triệu đô và 45 tỷ đô.
+4. Kiểm tra caption khớp voice-over và không che nội dung quan trọng.
+5. Render frame đại diện của Scene 1, Scene 2, Scene 3, Scene 4, hai phần Scene 5 và CTA.
+6. Nếu tất cả frame đạt, render ReelVI ra out/netflix-reel-vi.mp4.
+7. Mở file kết quả, kiểm tra bằng công cụ đọc metadata rằng video có hình, có tiếng, đúng kích thước và thời lượng.
+8. Báo rõ đường dẫn file. Không commit video MP4 lên Git.</code></pre>
+          </div>
+        </section>
+
+        <footer class="footer">
+          Netflix Reel Production Guide. Tài liệu được tạo từ chính asset, audio và mã nguồn của project mẫu. Hãy kiểm tra bản quyền asset và xác minh dữ liệu trước khi dùng thương mại.
+        </footer>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const root = document.documentElement;
+    const themeButton = document.getElementById('themeButton');
+    const savedTheme = localStorage.getItem('netflix-guide-theme');
+    const systemLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    root.dataset.theme = savedTheme || (systemLight ? 'light' : 'dark');
+
+    themeButton.addEventListener('click', () => {
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      localStorage.setItem('netflix-guide-theme', next);
+    });
+
+    const copyText = async (text) => {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const area = document.createElement('textarea');
+      area.value = text;
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand('copy');
+      area.remove();
+    };
+
+    document.querySelectorAll('.prompt-block').forEach((block) => {
+      const button = block.querySelector('.copy-button');
+      const code = block.querySelector('code');
+      if (!button || !code) return;
+      button.addEventListener('click', async () => {
+        await copyText(code.textContent.trim());
+        button.textContent = 'Đã sao chép';
+        button.dataset.copied = 'true';
+        window.setTimeout(() => {
+          button.textContent = 'Sao chép';
+          button.dataset.copied = 'false';
+        }, 1600);
+      });
+    });
+  </script>
+</body>
+</html>
